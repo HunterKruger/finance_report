@@ -1,0 +1,19 @@
+金融信息渠道汇总： 
+主流商业信息渠道：https://researchguides.smu.edu.sg/ld.php?content_id=17865814
+主流金融信息渠道： https://researchguides.smu.edu.sg/ld.php?content_id=49114880
+内容信息渠道：https://researchguides.smu.edu.sg/ld.php?content_id=47305296
+
+主要金融信息网站：
+Capital IQ: Company and markets data. Excel plug-in available
+LSEG Workspace: Company and markets data. Excel plug-in available
+Datastream: fast downloads of market data.
+Factset: Company and markets data. Desktop client available by request.
+Alpha Vantage: Provides free APIs for market data.
+Extel: For the latest rankings of the top investment bank research analysts for a particular industry click on "Research & Rankings" and then select ranking from the list (e.g. "All-American Research Team"). Entries include a summary of what the top analysts are saying about the industry they cover.
+EMIS: Once in a country's page in the database, click "Industry" and then select "Industry Research" to see whether any investment bank analyst reports are available.
+Bloomberg Research Portal
+Morningstar Direct (Morningstar reports also are available via Pitchbook. Select Library, then Research Center and choose Morningstar)
+Standard & Poor's NetAdvantage (for equity analysis)
+Standard & Poor's Ratings Direct within Capital IQ (for credit analysis)
+Value Line
+ 

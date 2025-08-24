@@ -1,0 +1,44 @@
+PART A — The Output Format
+1) One‑Page Company Card
+Header: Ticker • Exchange • Sector • Geography • Fiscal year‑end • Last update
+A. Quick Business Summary (3 bullets max)
+What the company actually does (plain language)
+The single biggest driver of value
+What changed since last quarter/year
+B. Business Model (≤80 words + diagram)
+上下游关系Who pays? For what? How often? (one sentence each)
+Go‑to‑market: direct / channel / marketplace / subscription / usage‑based
+生意模式（how does the company make money and how it can sustain the earning)，经济护城河(economic moat)
+C. Fundamental Metrics  
+Revenue = ∑ (Active Customers × Avg Price × Usage) by segment
+Gross Margin = Revenue − (COGS_fulfillment + COGS_compute + COGS_third‑party)
+Free Cash Flow = EBIT(1−t) + D&A − Capex − ΔNWC
+Add segment‑specific nodes (ARPU, churn, seats, utilization, load factor, occupancy, etc.)
+P/E Ratio comparison  
+Earning per share
+D. News/sentimental Analysis (per core unit)
+Acquisition cost (CAC)
+12‑mo gross profit per unit (GP12)
+Payback months = CAC / monthly GP
+LTV (cohort‑based, show churn assumption)
+Show a small sensitivity box: churn ±2pp, price ±5%
+E. Quality Snapshot
+Moat: network / switching costs / scale / IP (tick boxes + 1‑line evidence)
+Cyclicality & operating leverage (low / medium / high)
+Accounting quality (revenue recognition, capitalized costs, SBC%)
+Governance red flags (dual‑class, related‑party, restatements)
+F. KPI Mini‑Chart
+8 quarters: Revenue, Gross Margin, FCF margin, ROIC (sparklines)
+G. Valuation Summary
+Method: DCF / Comps / Sum‑of‑Parts (SoTP)
+Implied fair value range (low / base / high)
+Most sensitive inputs (WACC, LT growth, margin target)
+Quick reality checks vs peers
+H. Risks & “What would make us wrong?”
+Top 3 execution or structural risks
+Monitoring list (leading indicators)
+I. Sources & Confidence
+Linked citations with page/paragraph anchors
+Confidence score (1–5) + coverage note (which filings / quarters ingested)
+
+
