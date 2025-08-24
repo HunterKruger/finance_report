@@ -6,47 +6,47 @@
 
 ### 2. 数据源与采集
 - **权威/付费**: Bloomberg、Capital IQ、Factset、Morningstar Direct、LSEG Workspace、EMIS、S&P NetAdvantage、Value Line（参考 `fin/info_source.txt`）。
-- **免费/开放**: Alpha Vantage、SEC EDGAR、Yahoo Finance（含 yfinance）、NewsAPI、GDELT、公司官网/财报 PDF、投资者关系网页。
+- **免费/开放**: Alpha Vantage、SEC EDGAR、Yahoo Finance（含 yfinance）、NewsAPI、GDELT、公司官网/财报 PDF、投资者关系网页。 **这个finhub似乎有比较多的数据源 这个有现成的api调用最友好**
 - **自有/离线**: PDF、DOCX、XLSX、TXT、网页快照。
 - **接入方式**:
   - API 拉取（REST/Websocket）：行情、财务、新闻。
   - 文档抓取：爬虫+速率控制+Robots 合规；或人工上传。
   - 变更检测：Ticker 订阅、RSS、EDGAR 8-K/10-K/10-Q 增量追踪。
 
-### 3. 文档解析与标准化
+### 3. 文档解析与标准化 （这部分由于咱们的数据源目前只有一些数据和文字应该不用特定的工具，弄个json template就好了，以及openai现在的新api支持mcp以及历史id直接继承对话，现在开发难度大大降低了）
 - **解析**: PDF/HTML/DOCX 结构解析、OCR（扫描件）、表格提取（财报表格）、货币/单位标准化、日期归一、语言检测与翻译（可选）。
 - **工具**: Unstructured、Apache Tika、pdfplumber、Camelot/Tabula、Tesseract OCR、trafilatura/Readability（网页正文抽取）。
 - **标准化**: 统一字段键（ticker、period、fiscal_year_end、source_url、page_anchor、currency、unit）。
 
-### 4. 知识库构建（RAG）
+### 4. 知识库构建（RAG）（这个前期应该也不用考虑，因为咱们一开始做的话应该也没有什么私域数据，互联网数据随时拉取）
 - **切分**: 基于语义/结构（标题、表格、段落、脚注）分块；保留来源锚点（页码/段落号）。
 - **嵌入模型**: OpenAI text-embedding-3-large/small、bge-m3、e5-mistral；向量维度与成本权衡。
 - **向量库**: FAISS、Chroma、Milvus、Weaviate、Postgres+pgvector。
 - **元数据**: {ticker, report_type, period, page, section, currency, updated_at, source_url}。
 - **更新策略**: 全量初建 + 增量摄取（基于哈希/ETag/发布时间）。
 
-### 5. 工作流编排与角色分工
+### 5. 工作流编排与角色分工 （不知道LangChain的可扩展性如何，咱们未来不一定确定什么模型或者是几个模型multi agent）
 - **框架**: LangChain / LlamaIndex / DSPy（任选其一为主，便于管道化与评测）。
-- **子任务代理**:
+- **子任务代理**: (subtask是否需要过细的划分，过细的划分也会导致不同task内容之间的overlap尤其是ABC这三个基本信息类的) （每个action的设计过程中可能得加强事实强制引用确保真实性消除hallucination）
   - A 概览撰写 Agent（简洁业务、关键驱动、变化）
   - B 商业模式 Agent（Who pays/For what/频率、GTM、护城河）
   - C 基础指标 Agent（口径对齐/口算校验）
-  - D 情绪/新闻 Agent（新闻抓取+主题聚类+情绪）
-  - E 质量快照 Agent（会计质量/治理红旗）
+  - D 情绪/新闻 Agent（新闻抓取+主题聚类+情绪）（这个可能得好好设计参考一下现在的web serach action）
+  - E 质量快照 Agent（会计质量/治理红旗） 
   - F KPI 小图 Agent（生成/嵌入）
   - G 估值 Agent（DCF/可比/SoTP）
   - H 风险 Agent（Top3 风险与监控）
-  - I 引用与信心 Agent（引用去重与打分）
+  - I 引用与信心 Agent（引用去重与打分）（llm as a judge 尤其是给出一个分数这种不是一个好的eval方式非常不robust,以及咱们这个报告最终要给出一个明确的投资意见吗？比如说‘建议未来一年持有NVIDIA’）
 - **工具调用**: 计算器（财务公式）、检索器（RAG）、数据 API、图表渲染器、校验器。
 
 ```mermaid
-graph LR
+graph ~~LR~~
   A[数据采集\nAPI/抓取/上传] --> B[解析标准化\nOCR/表格/单位]
-  B --> C[索引与嵌入\n向量库+元数据]
+  B --> C[索引与嵌入\n向量库+元数据] 
   C --> D[检索与编排\n多 Agent 协作]
   D --> E[结构化输出\nJSON Schema]
   E --> F[渲染输出\nMarkdown/PDF]
-  D --> G[计算与图表\nDCF/PE/KPI]
+  D --> G[计算与图表\nDCF/PE/KPI] 
   D --> H[事实校验\n引用与置信度]
   H --> E
   F --> I[发布/归档\n存储与版本]
@@ -67,7 +67,7 @@ graph LR
   - H: Top3 风险与监控指标。
   - I: 来源链接（带页/段锚点）、置信度、覆盖说明。
 
-### 7. 财务计算与可视化
+### 7. 财务计算与可视化 (这部分是否会在现实财报分析中比较重要呢？就是抛开咱们能直接拉取的index，通过计算来获取一些预设的index，或者说如果咱们的数据源够全的话，是否还需要这些计算)
 - **核心公式**: Revenue 拆分、GM、FCF、P/E、EPS、LTV、Payback、敏感性分析、DCF（WACC、LT growth、margin target）。
 - **实现**: Python pandas/numpy + 自定义校验器（口径一致性、单位/币种转换、区间检查）。
 - **图表**: matplotlib/plotly 生成迷你图；或 QuickChart 静态图；嵌入 Markdown/导出 PNG。
